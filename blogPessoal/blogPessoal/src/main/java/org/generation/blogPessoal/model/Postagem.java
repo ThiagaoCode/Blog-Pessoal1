@@ -6,32 +6,36 @@ import javax.persistence.Entity;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
-@Entity  //notacao quer quer dizer que vai ser uma classe do jpa referente
+@Entity // notacao quer quer dizer que vai ser uma classe do jpa referente
 @Table(name = "postagens")
 
 public class Postagem {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	private String titulo;
-	
+
 	@NotNull
 	@Size(min = 10, max = 1000)
 	private String texto;
-	
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date = new java.sql.Date(System.currentTimeMillis());
+
+	@ManyToOne           //Interacao de tabelas
+	@JsonIgnoreProperties("Postagem")
+	private Tema tema;
 
 	public long getId() {
 		return id;
@@ -64,9 +68,13 @@ public class Postagem {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-		
-	
-	
-	
+
+	public Tema getTema() {
+		return tema;
+	}
+
+	public void setTema(Tema tema) {
+		this.tema = tema;
+	}
 
 }
